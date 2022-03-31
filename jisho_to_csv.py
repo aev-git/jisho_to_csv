@@ -7,13 +7,10 @@ import csv
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-kanjiList = []
-furiganaList = []
-definitionList = []
 urls = []
 vocabList = []
 
-def process_tags(soup, cssSelector, targetList):
+def process_tags(soup, cssSelector):
     tag = soup.select_one(cssSelector)
     
     if (tag is not None):
@@ -21,9 +18,9 @@ def process_tags(soup, cssSelector, targetList):
         for string in tag.stripped_strings:
             word += string
         print("data: " + word)
-        targetList.append(word)
+        return word
 
-def process_definitions(soup, cssSelector, targetList):
+def process_definitions(soup, cssSelector):
     tag = soup.select_one(cssSelector)
     if (tag is not None):
         word = ""
@@ -34,21 +31,16 @@ def process_definitions(soup, cssSelector, targetList):
                 word += ("\n" + line)
             
         print("data: " + word)
-        targetList.append(word)
+        return word
             
 def process_urls(url):
     page = urlopen(url)
     html = page.read().decode("utf-8")
     soup = BeautifulSoup(html, "html.parser")
 
-    print("processing kanji...")
-    process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2)', kanjiList)
-
-    print("processing furigana...")
-    process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)', furiganaList)
-
-    print("processing definitions...")
-    process_definitions(soup, '.exact_block > div:nth-child(2) > div:nth-child(2) > div:nth-child(1)', definitionList)
+    vocabList.append([process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2)'),
+                     process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)'),
+                     process_definitions(soup, '.exact_block > div:nth-child(2) > div:nth-child(2) > div:nth-child(1)')])
 
 if __name__ == "__main__":
     sourcefile = input("file to read from: ")
@@ -70,7 +62,6 @@ if __name__ == "__main__":
         #export data onto csv spreadsheet
         print("creating spreadsheet...")
 
-        vocabList = zip(kanjiList, furiganaList, definitionList)
         with open(exportfile, 'w', newline='', encoding='utf-8') as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerows(vocabList)
