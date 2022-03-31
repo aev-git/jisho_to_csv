@@ -6,25 +6,12 @@ import re
 import csv
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from openpyxl import Workbook
 
 kanjiList = []
 furiganaList = []
 definitionList = []
 urls = []
-    
-def write_to_spreadsheet(workbook, data, col):
-    sheet = workbook.active
-    for i in range(0, len(data)):
-        cellref = sheet.cell(row=i+1, column=col)
-        cellref.value = data[i];
-        
-def create_vocab_spreadsheet(path):
-    workbook = Workbook()
-    write_to_spreadsheet(workbook, kanjiList, 1)
-    write_to_spreadsheet(workbook, furiganaList, 2)
-    write_to_spreadsheet(workbook, definitionList, 3)
-    workbook.save(path)
+vocabList = []
 
 def process_tags(soup, cssSelector, targetList):
     tag = soup.select_one(cssSelector)
@@ -43,7 +30,7 @@ def process_definitions(soup, cssSelector, targetList):
         defs = tag.find_all(class_="meaning-meaning")
         for child in defs:
             line = str(child.string)
-            if (line != None):
+            if (line != "None"):
                 word += ("\n" + line)
             
         print("data: " + word)
@@ -65,22 +52,30 @@ def process_urls(url):
 
 if __name__ == "__main__":
     sourcefile = input("file to read from: ")
-    exportfile = input("file to write to (must end in .xlsx):")
-    
-    #get urls from file
-    print("reading urls...")
-    f = open(sourcefile, "r")
+    exportfile = input("file to write to (must end in .csv):")
 
-    for x in f:
-        urls.append(x)
+    try:
+        #get urls from file
+        print("reading urls...")
+        f = open(sourcefile, "r")
 
-    #get word info from webpage
-    print("processing urls...")
-    for url in urls:
-        process_urls(url)
-        
-    #export data onto spreadsheet
-    print("creating spreadsheet...")
-    create_vocab_spreadsheet(exportfile)
-    print("finished!")
-    f.close()
+        for x in f:
+            urls.append(x)
+
+        #get word info from webpage
+        print("processing urls...")
+        for url in urls:
+            process_urls(url)
+            
+        #export data onto csv spreadsheet
+        print("creating spreadsheet...")
+
+        vocabList = zip(kanjiList, furiganaList, definitionList)
+        with open(exportfile, 'w', newline='', encoding='utf-8') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerows(vocabList)
+
+        print("finished!")
+        f.close()
+    except:
+        print("An exception has occured")
