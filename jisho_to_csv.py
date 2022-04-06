@@ -4,6 +4,7 @@
 
 import re
 import csv
+import traceback
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
@@ -17,7 +18,6 @@ def process_tags(soup, cssSelector):
         word = ""
         for string in tag.stripped_strings:
             word += string
-        print("data: " + word)
         return word
 
 def process_definitions(soup, cssSelector):
@@ -28,9 +28,7 @@ def process_definitions(soup, cssSelector):
         for child in defs:
             line = str(child.string)
             if (line != "None"):
-                word += ("\n" + line)
-            
-        print("data: " + word)
+                word += ("\n" + line)  
         return word
             
 def process_urls(url):
@@ -70,3 +68,4 @@ if __name__ == "__main__":
         f.close()
     except:
         print("An exception has occured")
+        traceback.print_exc()
