@@ -4,6 +4,7 @@
 
 import re
 import csv
+import traceback
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
@@ -17,7 +18,7 @@ def process_tags(soup, cssSelector):
         word = ""
         for string in tag.stripped_strings:
             word += string
-        print("data: " + word)
+        print(word)
         return word
 
 def process_definitions(soup, cssSelector):
@@ -28,9 +29,7 @@ def process_definitions(soup, cssSelector):
         for child in defs:
             line = str(child.string)
             if (line != "None"):
-                word += ("\n" + line)
-            
-        print("data: " + word)
+                word += ("\n" + line)  
         return word
             
 def process_urls(url):
@@ -39,8 +38,11 @@ def process_urls(url):
     soup = BeautifulSoup(html, "html.parser")
 
     kanji = process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2)')
-    vocabList.append([kanji,
-                     "[" + process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)') + "]",
+    reading = process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)')
+    if (reading != ""):
+        reading = "[" + reading + "]"
+    
+    vocabList.append([kanji, kanji + reading,
                      process_definitions(soup, '.exact_block > div:nth-child(2) > div:nth-child(2) > div:nth-child(1)')])
 
 if __name__ == "__main__":
@@ -71,3 +73,4 @@ if __name__ == "__main__":
         f.close()
     except:
         print("An exception has occured")
+        traceback.print_exc()
