@@ -37,8 +37,12 @@ def process_urls(url):
     html = page.read().decode("utf-8")
     soup = BeautifulSoup(html, "html.parser")
 
-    vocabList.append([process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2)'),
-                     process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)'),
+    expression = process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2)')
+    reading = process_tags(soup, '.exact_block > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)')
+    if (reading != ""):
+        reading = "[" + reading + "]"
+    
+    vocabList.append([expression, expression + reading,
                      process_definitions(soup, '.exact_block > div:nth-child(2) > div:nth-child(2) > div:nth-child(1)')])
 
 if __name__ == "__main__":
