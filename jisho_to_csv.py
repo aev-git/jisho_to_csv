@@ -18,6 +18,7 @@ def process_tags(soup, cssSelector):
         word = ""
         for string in tag.stripped_strings:
             word += string
+        print(word)
         return word
 
 def process_definitions(soup, cssSelector):

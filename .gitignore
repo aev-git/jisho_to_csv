@@ -1,40 +1,10 @@
+#files created during testing
+*.csv
 
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@azyro16
-github /
-gitignore
-Public
+# Created by https://www.toptal.com/developers/gitignore/api/python
+# Edit at https://www.toptal.com/developers/gitignore?templates=python
 
-Code
-Pull requests 235
-Actions
-Security
-
-    Insights
-
-gitignore/Python.gitignore
-@astrojuanlu
-astrojuanlu Update Python.gitignore
-Latest commit 8e67b94 on Feb 20
-History
-90 contributors
-@arcresu
-@shiftkey
-@jwg4
-@astrojuanlu
-@GabrielC101
-@misaelnieto
-@pmsosa
-@svkampen
-@vltr
-@thedrow
-@matheussl
-@Lucretiel
-160 lines (131 sloc) 3.01 KB
+### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -138,15 +108,7 @@ ipython_config.py
 #   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
 #poetry.lock
 
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#pdm.lock
-#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
-#   in version control.
-#   https://pdm.fming.dev/#use-with-ide
-.pdm.toml
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
 
 # Celery stuff
@@ -196,18 +158,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-    © 2022 GitHub, Inc.
-
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
-Loading complete
+# End of https://www.toptal.com/developers/gitignore/api/python
